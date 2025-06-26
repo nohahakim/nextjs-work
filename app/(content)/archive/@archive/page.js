@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { getAvailableNewsYears } from "@/lib/news";
 
-export default function ArchivePage() {
-  const links = getAvailableNewsYears();
+export default async function ArchivePage() {
+  const links = await getAvailableNewsYears();
 
   return (
     <header id="archive-header">
