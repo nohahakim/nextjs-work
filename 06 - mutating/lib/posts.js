@@ -1,6 +1,6 @@
-import sql from 'better-sqlite3';
+import sql from "better-sqlite3";
 
-const db = new sql('posts.db');
+const db = new sql("posts.db");
 
 function initDb() {
   db.exec(`
@@ -30,7 +30,7 @@ function initDb() {
     )`);
 
   // Creating two dummy users if they don't exist already
-  const stmt = db.prepare('SELECT COUNT(*) AS count FROM users');
+  const stmt = db.prepare("SELECT COUNT(*) AS count FROM users");
 
   if (stmt.get().count === 0) {
     db.exec(`
@@ -40,7 +40,7 @@ function initDb() {
 
     db.exec(`
     INSERT INTO users (first_name, last_name, email)
-    VALUES ('Max', 'Schwarz', 'max@example.com')
+    VALUES ('Jane', 'Doe', 'jane@example.com')
   `);
   }
 }
@@ -48,14 +48,14 @@ function initDb() {
 initDb();
 
 export async function getPosts(maxNumber) {
-  let limitClause = '';
+  let limitClause = "";
 
   if (maxNumber) {
-    limitClause = 'LIMIT ?';
+    limitClause = "LIMIT ?";
   }
 
   const stmt = db.prepare(`
-    SELECT posts.id, image_url AS image, title, content, created_at AS createdAt, first_name AS userFirstName, last_name AS userLastName, COUNT(likes.post_id) AS likes, EXISTS(SELECT * FROM likes WHERE likes.post_id = posts.id and likes.user_id = 2) AS isLiked
+    SELECT posts.id, image_url AS image, title, content, created_at AS createdAt, first_name AS userFirstName, last_name AS userLastName, COUNT(likes.post_id) AS likes, EXISTS(SELECT * FROM likes WHERE likes.post_id = posts.id and likes.user_id = 2) AS isLiked 
     FROM posts
     INNER JOIN users ON posts.user_id = users.id
     LEFT JOIN likes ON posts.id = likes.post_id
